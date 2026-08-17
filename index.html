@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taveon — Cybersecurity & IT Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14161A;
+    --paper:#EDEAE3;
+    --paper-dim:#C9C5BB;
+    --panel:#1B1E24;
+    --panel-line:#30343C;
+    --amber:#FF8A3D;
+    --teal:#4FD1C5;
+    --red:#C2452D;
+    --mono-display: 'Space Mono', monospace;
+    --mono-data: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);line-height:1.6;}
+  a{color:inherit;}
+  ::selection{background:var(--amber);color:var(--ink);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(20,22,26,0.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--panel-line);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;}
+  .brand{font-family:var(--mono-display);font-size:15px;letter-spacing:0.02em;color:var(--paper);text-decoration:none;}
+  .brand span{color:var(--amber);}
+  .navlinks{display:flex;gap:22px;list-style:none;margin:0;padding:0;}
+  .navlinks a{font-family:var(--mono-data);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;text-decoration:none;color:var(--paper-dim);transition:color .15s ease;}
+  .navlinks a:hover{color:var(--teal);}
+  @media (max-width:600px){ .navlinks{gap:12px;} .navlinks a{font-size:10px;} }
+
+  /* HERO */
+  header.hero{padding:56px 0 36px;border-bottom:1px solid var(--panel-line);}
+  .scan-frame{background:var(--panel);border:1px solid var(--panel-line);border-radius:4px;overflow:hidden;}
+  .scan-titlebar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--panel-line);font-family:var(--mono-data);font-size:11px;color:var(--paper-dim);letter-spacing:0.05em;}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .dot.r{background:var(--red);} .dot.a{background:var(--amber);} .dot.t{background:var(--teal);}
+  .scan-body{padding:24px 20px 28px;font-family:var(--mono-data);font-size:13px;color:var(--paper-dim);}
+  .scan-line{margin:0 0 6px;white-space:pre-wrap;}
+  .scan-line .k{color:var(--teal);}
+  .prompt-caret{display:inline-block;width:8px;height:14px;background:var(--amber);animation:blink 1.1s steps(1) infinite;vertical-align:-2px;margin-left:4px;}
+  @keyframes blink{50%{opacity:0;}}
+  .name{font-family:var(--mono-display);font-weight:700;font-size:clamp(30px,5.5vw,48px);color:var(--paper);margin:16px 0 4px;letter-spacing:-0.01em;}
+  .role{font-family:var(--mono-data);font-size:14px;color:var(--amber);margin:0 0 16px;}
+  .lede{max-width:64ch;color:var(--paper-dim);font-size:16px;margin:0 0 20px;}
+  .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+  .btn{font-family:var(--mono-data);font-size:12px;text-transform:uppercase;letter-spacing:0.06em;text-decoration:none;padding:11px 18px;border-radius:3px;border:1px solid var(--panel-line);color:var(--paper);transition:border-color .15s ease, color .15s ease, background .15s ease;display:inline-block;}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:var(--ink);font-weight:600;}
+  .btn.primary:hover{background:#6fe0d4;}
+  .btn:not(.primary):hover{border-color:var(--teal);color:var(--teal);}
+  .btn.small{padding:7px 12px;font-size:11px;}
+
+  section{padding:52px 0;border-bottom:1px solid var(--panel-line);}
+  .eyebrow{font-family:var(--mono-data);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px;}
+  h2{font-family:var(--mono-display);font-size:clamp(22px,3.2vw,28px);margin:0 0 20px;color:var(--paper);}
+  p.section-intro{color:var(--paper-dim);max-width:64ch;margin:0 0 26px;}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;}
+  @media (max-width:700px){.about-grid{grid-template-columns:1fr;}}
+  .field-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--panel-line);}
+  .field-list li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--panel-line);font-family:var(--mono-data);font-size:13px;}
+  .field-list li span:first-child{color:var(--paper-dim);}
+  .field-list li span:last-child{color:var(--paper);text-align:right;}
+
+  /* PROGRESS DASHBOARD */
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+  @media (max-width:700px){.stat-row{grid-template-columns:repeat(2,1fr);}}
+  .stat-card{background:var(--panel);border:1px solid var(--panel-line);border-radius:4px;padding:16px 16px 14px;}
+  .stat-num{font-family:var(--mono-display);font-size:30px;font-weight:700;color:var(--teal);line-height:1;margin-bottom:6px;}
+  .stat-label{font-family:var(--mono-data);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper-dim);}
+
+  .demo-tags{margin-bottom:8px;}
+  .demo-tags .tag-title{font-family:var(--mono-data);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--paper-dim);margin:0 0 10px;}
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{font-family:var(--mono-data);font-size:12px;color:var(--paper);background:rgba(79,209,197,0.08);border:1px solid var(--panel-line);padding:5px 9px;border-radius:3px;}
+
+  /* SECURITY PROJECTS */
+  .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+  @media (max-width:800px){.project-grid{grid-template-columns:1fr;}}
+  .project-card{background:var(--panel);border:1px solid var(--panel-line);border-radius:4px;padding:18px 18px 16px;display:flex;flex-direction:column;}
+  .project-card h3{font-family:var(--mono-data);font-size:13px;color:var(--paper);margin:0 0 10px;}
+  .project-card p{color:var(--paper-dim);font-size:13px;margin:0 0 16px;flex-grow:1;}
+  .project-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+  .project-tags .tag{font-size:10.5px;padding:3px 7px;}
+  .project-card .lab-link{align-self:flex-start;}
+
+  /* SKILLS */
+  .skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  @media (max-width:640px){.skill-grid{grid-template-columns:1fr;}}
+  .skill-card{background:var(--panel);border:1px solid var(--panel-line);border-radius:4px;padding:18px 18px 16px;}
+  .skill-card h3{font-family:var(--mono-data);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);margin:0 0 12px;}
+
+  /* THM */
+  .thm-panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:4px;padding:26px;display:flex;gap:26px;align-items:center;flex-wrap:wrap;}
+  .thm-badge-slot{width:200px;height:60px;border:1px dashed var(--panel-line);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--mono-data);font-size:11px;color:var(--paper-dim);flex-shrink:0;background:repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 6px, transparent 6px 12px);}
+  .thm-copy{flex:1;min-width:220px;}
+  .thm-copy p{margin:0 0 14px;color:var(--paper-dim);font-size:14px;}
+  .status-row{font-family:var(--mono-data);font-size:12px;color:var(--teal);margin:0 0 10px;}
+
+  /* LAB LOG TABLE */
+  .log-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .log-table thead th{
+    text-align:left;font-family:var(--mono-data);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;
+    color:var(--paper-dim);padding:0 10px 10px;border-bottom:1px solid var(--panel-line);
+  }
+  .log-table tbody td{padding:14px 10px;border-bottom:1px solid var(--panel-line);vertical-align:top;color:var(--paper-dim);}
+  .log-table tbody tr:hover{background:rgba(255,255,255,0.015);}
+  .lab-name{color:var(--paper);font-weight:600;font-size:14.5px;display:block;margin-bottom:3px;}
+  .lab-platform{font-family:var(--mono-data);font-size:11px;color:var(--paper-dim);}
+  .lab-tags{display:flex;flex-wrap:wrap;gap:5px;}
+  .lab-tags .tag{font-size:10.5px;padding:3px 7px;}
+  .status-pill{font-family:var(--mono-data);font-size:10.5px;text-transform:uppercase;letter-spacing:0.05em;padding:4px 9px;border-radius:3px;white-space:nowrap;display:inline-block;}
+  .status-pill.done{color:var(--teal);border:1px solid rgba(79,209,197,0.4);}
+  .status-pill.progress{color:var(--amber);border:1px solid rgba(255,138,61,0.4);}
+  .lab-link{font-family:var(--mono-data);font-size:11.5px;color:var(--teal);text-decoration:none;white-space:nowrap;}
+  .lab-link:hover{text-decoration:underline;}
+  .lab-link.disabled{color:var(--paper-dim);opacity:0.6;}
+  @media (max-width:700px){
+    .log-table thead{display:none;}
+    .log-table, .log-table tbody, .log-table tr, .log-table td{display:block;width:100%;}
+    .log-table tbody tr{border-bottom:1px solid var(--panel-line);padding:14px 0;}
+    .log-table tbody td{border-bottom:none;padding:4px 0;}
+  }
+  .table-note{font-family:var(--mono-data);font-size:11px;color:var(--paper-dim);margin-top:14px;}
+
+  footer{padding:44px 0 60px;}
+  .contact-grid{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;}
+  .footnote{font-family:var(--mono-data);font-size:11px;color:var(--paper-dim);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="brand">IT by <span>T</span></a>
+    <ul class="navlinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#cases">Lab Log</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="scan-frame">
+      <div class="scan-titlebar">
+        <span class="dot r"></span><span class="dot a"></span><span class="dot t"></span>
+        <span>engagement_summary.txt</span>
+      </div>
+      <div class="scan-body">
+        <p class="scan-line"><span class="k">$</span> whoami --verbose</p>
+        <p class="scan-line">location: Minnesota  <span class="k">C.E.H | Pentester</span><span class="prompt-caret">_</span></p>
+        
+      </div>
+    </div>
+
+    <h1 class="name">Taveon N</h1>
+    <p class="role">Penetration Testing · SOC / GRC · Freelance IT Services</p>
+    <p class="lede">Operator behind IT by T — Minnesota freelance IT & web dev, building a parallel track in offensive security. Every engagement gets scoped, tested, and documented to the same standard.</p>
+    <div class="hero-ctas">
+      <a class="btn" href="https://github.com/457R0" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://tryhackme.com/p/4S7r0" target="_blank" rel="noopener">THM ↗</a>
+      <a class="btn" href="https://www.linkedin.com/in/taveon-nelson-968622293/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="#contact">Get in Touch</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <p class="eyebrow">01 — Profile</p>
+    <h2>Background</h2>
+    <div class="about-grid">
+      <div>
+        <p style="color:var(--paper-dim);margin:0 0 16px;">
+          I provide freelance IT support and web development to small businesses and individual
+          clients. In parallel, I'm building a hands-on cybersecurity practice grounded in structured lab work, documented exploitation of intentionally vulnerable systems,
+          and a growing log of writeups that mirror real engagement reporting.
+        </p>
+        <p style="color:var(--paper-dim);margin:0;">
+          My background in retail operations and pharmacy technician work sharpened habits that translate
+          directly to GRC and compliance-adjacent work: process discipline, accuracy under scrutiny, and
+          clear documentation. I bring the same rigor to security assessments — every exercise is scoped,
+          tested, and written up to a professional standard.
+        </p>
+      </div>
+      <ul class="field-list">
+        <li><span>Location</span><span>Minnesota, USA</span></li>
+        <li><span>Services</span><span>IT Support · Web Dev · Security Testing</span></li>
+        <li><span>Certified</span><span>Google Cybersecurity</span></li>
+        <li><span>Training</span><span>TryHackMe PT1 Pathway | Various Labs [VMs, THM Challenges, OverTheWire]</span></li>
+        <li><span>Lab environments</span><span>Kali Linux / Windows / Android</span></li>
+        </ul>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <p class="eyebrow">02 — Proof of Work</p>
+    <h2>Lab Log</h2>
+    <p class="section-intro">A list of exercises I've run, in one place. Full writeups covering scope, reconnaissance, exploitation, and remediation — the same structure I use for a real engagement.</p>
+
+    <table class="log-table">
+      <thead>
+        <tr>
+          <th style="width:34%;">Lab</th>
+          <th style="width:24%;">Techniques</th>
+          <th style="width:14%;">Status</th>
+          <th style="width:14%;">Date</th>
+          <th style="width:14%;">Writeup</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="lab-name">Blue</span>
+            <span class="lab-platform">TryHackMe</span>
+          </td>
+          <td>
+            <div class="lab-tags"><span class="tag">SMB</span><span class="tag">MS17-010</span><span class="tag">John the Ripper</span></div>
+          </td>
+          <td><span class="status-pill done">Complete</span></td>
+          <td class="lab-platform">Aug 2026</td>
+          <td><a class="lab-link" href="writeups/blue.html">View Writeup →</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="table-note">check back for updates.</p>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <p class="eyebrow">03 — Security Projects</p>
+    <h2>Assessments &amp; Reports</h2>
+    <p class="section-intro">GRC and analyst-track work — compliance assessments, incident response, and vulnerability analysis — alongside applied engineering work with a security angle.</p>
+    <div class="project-grid">
+      <div class="project-card">
+        <h3>Security Audit</h3>
+        <div class="project-tags"><span class="tag">NIST CSF</span><span class="tag">PCI DSS</span><span class="tag">GDPR</span><span class="tag">SOC 1 &amp; 2</span></div>
+        <p>Conducted a controls and compliance assessment and provided recommendations to company stakeholders to mitigate risks and avoid fines.</p>
+        <a class="lab-link" href="https://docs.google.com/document/d/1kK9QBl956y3uwT8UeY6GgnYsijKrRW_gQjtkzZwgzbM/edit?usp=sharing" target="_blank" rel="noopener">Read Report →</a>
+      </div>
+      <div class="project-card">
+        <h3>Incident Report</h3>
+        <div class="project-tags"><span class="tag">DDoS</span><span class="tag">NIST CSF</span></div>
+        <p>Identified a DDoS attack, scoped the incident and potential network vulnerabilities, and documented analysis and recovery plans to restore normal operations.</p>
+        <a class="lab-link" href="https://docs.google.com/document/d/1PKt3F-qHukwvaM99ImWE5kFK27y_EtCYTpAwyUpozwk/edit?usp=sharing" target="_blank" rel="noopener">Read Report →</a>
+      </div>
+      <div class="project-card">
+        <h3>Vulnerability Assessment</h3>
+        <div class="project-tags"><span class="tag">NIST SP 800-30</span></div>
+        <p>Comprehensive vulnerability assessment of an open public database server, analyzing risk factors and proposing security enhancements to safeguard operations.</p>
+        <a class="lab-link" href="https://docs.google.com/document/d/1TnZCHcZ40VbkSKRP2xFRYcbP1CWKpwKbRXMfzPSQb5Y/edit?usp=sharing" target="_blank" rel="noopener">Read Report →</a>
+      </div>
+      <div class="project-card">
+        <h3>VitalWear</h3>
+        <div class="project-tags"><span class="tag">Android / WearOS</span><span class="tag">Reverse Engineering</span><span class="tag">ISO-DEP / HCE</span></div>
+        <p>Contributing to an open source Android/WearOS app — implemented a watch-side transfer button and an ISO-DEP/HCE connection to move data from smartphone to watch.</p>
+        <a class="lab-link" href="https://github.com/457R0/VitalWear" target="_blank" rel="noopener">View Project →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <p class="eyebrow">04 — Toolset</p>
+    <h2>Skills &amp; Tooling</h2>
+    <div class="skill-grid">
+      <div class="skill-card">
+        <h3>Offensive Security</h3>
+        <div class="tag-row">
+          <span class="tag">Recon &amp; Enumeration</span>
+          <span class="tag">Exploitation</span>
+          <span class="tag">Password Attacks</span>
+          <span class="tag">Web App Testing</span>
+          <span class="tag">Wireless Auditing</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Tools</h3>
+        <div class="tag-row">
+          <span class="tag">Nmap</span>
+          <span class="tag">Metasploit</span>
+          <span class="tag">Burp Suite</span>
+          <span class="tag">Nessus</span>
+          <span class="tag">John the Ripper</span>
+          <span class="tag">Hydra</span>
+          <span class="tag">Wireshark</span>
+          <span class="tag">Tcpdump</span>
+          <span class="tag">Suricata (IDS/IPS)</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Systems &amp; Infra</h3>
+        <div class="tag-row">
+          <span class="tag">Linux (Kali, Mint)</span>
+          <span class="tag">Windows</span>
+          <span class="tag">Android</span>
+          <span class="tag">VMware Networking</span>
+          <span class="tag">Elastic Stack / SIEM</span>
+          <span class="tag">Splunk</span>
+          <span class="tag">Bash</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Frameworks &amp; Compliance</h3>
+        <div class="tag-row">
+          <span class="tag">NIST CSF</span>
+          <span class="tag">NIST SP 800-30</span>
+          <span class="tag">PCI DSS</span>
+          <span class="tag">GDPR</span>
+          <span class="tag">SOC 1 &amp; SOC 2</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Dev &amp; Client Services</h3>
+        <div class="tag-row">
+          <span class="tag">HTML / CSS / JS</span>
+          <span class="tag">Python</span>
+          <span class="tag">Git / GitHub</span>
+          <span class="tag">Flask</span>
+          <span class="tag">Client IT Support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="eyebrow">05 — Contact</p>
+    <h2>Let's Work Together</h2>
+    <p class="section-intro">Available for freelance IT support, web development, and entry-level security work. Reach out directly or review the lab log above.</p>
+    <div class="contact-grid">
+      <a class="btn primary" href="mailto:taveonnelson@proton.me">Email Me ↗</a>
+      <a class="btn" href="https://github.com/457R0" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://tryhackme.com/p/4S7r0" target="_blank" rel="noopener">TryHackMe ↗</a>
+      <a class="btn" href="https://www.linkedin.com/in/taveon-nelson-968622293/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="https://457r0.github.io/mysite" target="_blank" rel="noopener">Web Dev Portfolio ↗</a>
+    </div>
+    <p class="footnote">IT by T — Minnesota · Built &amp; maintained by Taveon</p>
+  </div>
+</footer>
+
+</body>
+</html>

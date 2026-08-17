@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case 001 — Blue | IT by T</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14161A; --paper:#EDEAE3; --paper-dim:#C9C5BB;
+    --panel:#1B1E24; --panel-line:#30343C;
+    --amber:#FF8A3D; --teal:#4FD1C5; --red:#C2452D;
+    --mono-display:'Space Mono',monospace; --mono-data:'IBM Plex Mono',monospace; --sans:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);line-height:1.65;}
+  a{color:var(--teal);}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+  nav{position:sticky;top:0;z-index:50;background:rgba(20,22,26,0.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--panel-line);padding:14px 0;}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;}
+  .brand{font-family:var(--mono-display);font-size:14px;text-decoration:none;color:var(--paper);}
+  .brand span{color:var(--amber);}
+  .back{font-family:var(--mono-data);font-size:12px;text-decoration:none;color:var(--paper-dim);}
+  .back:hover{color:var(--teal);}
+
+  header.case-hero{padding:48px 0 32px;border-bottom:1px solid var(--panel-line);}
+  .case-meta{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--mono-data);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper-dim);margin-bottom:14px;}
+  .case-meta span{border:1px solid var(--panel-line);padding:4px 8px;border-radius:3px;}
+  .case-meta .status{color:var(--teal);border-color:rgba(79,209,197,0.4);}
+  h1{font-family:var(--mono-display);font-size:clamp(28px,5vw,42px);margin:0 0 10px;}
+  .subtitle{color:var(--paper-dim);font-size:16px;max-width:60ch;margin:0;}
+
+  article{padding:40px 0;border-bottom:1px solid var(--panel-line);}
+  .step{margin-bottom:44px;}
+  .step-num{font-family:var(--mono-data);font-size:11px;color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 6px;}
+  h2{font-family:var(--mono-display);font-size:20px;margin:0 0 14px;color:var(--paper);}
+  p{color:var(--paper-dim);margin:0 0 14px;}
+  ul{color:var(--paper-dim);padding-left:20px;margin:0 0 14px;}
+  li{margin-bottom:6px;}
+
+  .term{background:var(--panel);border:1px solid var(--panel-line);border-radius:4px;padding:16px 18px;font-family:var(--mono-data);font-size:12.5px;color:var(--paper-dim);overflow-x:auto;margin:0 0 14px;}
+  .term .c{color:var(--teal);}
+  .term .out{color:var(--paper);}
+
+  .shot{margin:0 0 14px;}
+  .shot img{width:100%;display:block;border:1px solid var(--panel-line);border-radius:4px;}
+  .shot figcaption{font-family:var(--mono-data);font-size:11px;color:var(--paper-dim);margin-top:6px;}
+
+  .credbox{border:1px solid var(--panel-line);border-radius:4px;padding:14px 16px;font-family:var(--mono-data);font-size:13px;background:var(--panel);margin:0 0 14px;}
+  .credbox div{display:flex;justify-content:space-between;padding:4px 0;color:var(--paper-dim);}
+  .credbox div span:last-child{color:var(--amber);}
+
+  table{width:100%;border-collapse:collapse;font-family:var(--mono-data);font-size:12.5px;margin:0 0 14px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--panel-line);color:var(--paper-dim);}
+  th{color:var(--paper);text-transform:uppercase;font-size:11px;letter-spacing:0.05em;}
+
+  footer{padding:36px 0 60px;}
+  .footnote{font-family:var(--mono-data);font-size:11px;color:var(--paper-dim);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../index.html" class="brand">IT by <span>T</span></a>
+    <a href="../index.html#cases" class="back">← Back to Case Files</a>
+  </div>
+</nav>
+
+<header class="case-hero">
+  <div class="wrap">
+    <div class="case-meta">
+      <span>Case 001</span>
+      <span>TryHackMe — Blue</span>
+      <span class="status">Complete</span>
+    </div>
+    <h1>Remote Code Execution via MS17-010 (EternalBlue)</h1>
+    <p class="subtitle">A penetration test of an unpatched Windows host, exploiting the SMBv1 EternalBlue vulnerability to gain a SYSTEM-level shell and recover user credentials.</p>
+  </div>
+</header>
+
+<article>
+  <div class="wrap">
+
+    <div class="step">
+      <p class="step-num">01 — Executive Summary</p>
+      <h2>Summary</h2>
+      <p>This engagement targeted a single Windows host as part of the TryHackMe "Blue" room. The objective was to identify and exploit vulnerabilities exposed by the host's network services, escalate to full system access, and recover credentials to demonstrate complete compromise. A full port scan identified SMB exposed on the host, which was confirmed vulnerable to <strong>MS17-010 (EternalBlue)</strong>. Exploitation via Metasploit returned a Meterpreter session, from which password hashes were dumped and cracked offline with John the Ripper, yielding valid Administrator and User credentials. This is a critical-severity finding: unauthenticated remote code execution as the highest-privileged account on the system.</p>
+    </div>
+
+    <div class="step">
+      <p class="step-num">02 — Scope</p>
+      <h2>Scope</h2>
+      <table>
+        <tr><th>Target</th><td>Single Windows host, IP 172.16.203.130 (TryHackMe-provisioned VM)</td></tr>
+        <tr><th>Environment</th><td>Isolated NAT network in VMware Workstation, attacking from Kali Linux</td></tr>
+        <tr><th>Objective</th><td>Identify exposed services, exploit for code execution, escalate to full compromise</td></tr>
+        <tr><th>Authorization</th><td>Explicit — TryHackMe platform-hosted, intentionally vulnerable target</td></tr>
+      </table>
+    </div>
+
+    <div class="step">
+      <p class="step-num">03 — Reconnaissance</p>
+      <h2>Scanning &amp; Enumeration</h2>
+      <p>Before scanning, the lab was set up on an isolated NAT network to safely interact with the target VM. A full-port Nmap scan was then run to fingerprint open services and identify the attack surface:</p>
+      <div class="term">
+<span class="c">$</span> nmap -sC -sV -p- -T4 -o /home/kali/Desktop/scan.txt 172.16.203.130
+      </div>
+      <p>This combines a script scan (<code>-sC</code>) and service/version detection (<code>-sV</code>) across all 65,535 ports (<code>-p-</code>), using the faster T4 timing template, with results saved to <code>scan.txt</code> for reference. The scan confirmed the target as a Windows host with SMB exposed — a strong lead given the well-known history of SMB vulnerabilities on unpatched builds from this era.</p>
+    </div>
+
+    <div class="step">
+      <p class="step-num">04 — Vulnerability Identification</p>
+      <h2>Researching an Exploit</h2>
+      <p>With SMB confirmed open, Exploit-DB was searched for known Windows SMB vulnerabilities. This surfaced the EternalBlue exploit chain (MS17-010) — a strong match for the target.</p>
+      <figure class="shot">
+        <img src="img/blue-exploitdb-search.png" alt="Exploit-DB search results for 'windows smb' showing EternalBlue-related entries">
+        <figcaption>Exploit-DB search for "windows smb" surfacing MS17-010 / EternalBlue exploits.</figcaption>
+      </figure>
+      <p>With a target exploit identified, the next step was to locate and load the matching module in Metasploit:</p>
+      <div class="term">
+<span class="c">msf</span> &gt; search eternal blue
+      </div>
+      <figure class="shot">
+        <img src="img/blue-msf-search.png" alt="Metasploit search results for eternal blue showing matching modules">
+        <figcaption>msfconsole search results — exploit/windows/smb/ms17_010_eternalblue selected as the primary module.</figcaption>
+      </figure>
+      <p>Before running anything, the module's info page was reviewed to confirm the vulnerability details, affected platforms, and privilege level — a habit worth keeping for every exploit, not just this one.</p>
+      <div class="term">
+<span class="c">msf</span> exploit(windows/smb/ms17_010_eternalblue) &gt; info
+      </div>
+      <figure class="shot">
+        <img src="img/blue-msf-info.png" alt="Metasploit module info for MS17-010 EternalBlue showing platform, privileged: yes, and disclosure date">
+        <figcaption>Module info confirming MS17-010 EternalBlue: privileged execution, Windows platform, disclosed 2017-03-14.</figcaption>
+      </figure>
+    </div>
+
+    <div class="step">
+      <p class="step-num">05 — Exploitation</p>
+      <h2>Configuring &amp; Running the Exploit</h2>
+      <p><code>show options</code> was used to check which settings were required before launch. The only mandatory value needing to be set manually was <code>RHOSTS</code> — the target IP.</p>
+      <div class="term">
+<span class="c">msf</span> exploit(windows/smb/ms17_010_eternalblue) &gt; set RHOSTS 172.16.203.130
+<span class="c">msf</span> exploit(windows/smb/ms17_010_eternalblue) &gt; show options
+      </div>
+      <figure class="shot">
+        <img src="img/blue-msf-options.png" alt="Metasploit show options output with RHOSTS, LHOST, and LPORT configured and ready to run">
+        <figcaption>Module fully configured — RHOSTS, LHOST, and LPORT set, payload staged, ready to execute.</figcaption>
+      </figure>
+      <p>With options confirmed, the exploit was launched. It succeeded, returning a Meterpreter session running as <code>NT AUTHORITY\SYSTEM</code> — the highest privilege level on a Windows host, obtained directly with no separate privilege escalation step required.</p>
+    </div>
+
+    <div class="step">
+      <p class="step-num">06 — Post-Exploitation</p>
+      <h2>Credential Recovery</h2>
+      <p>With SYSTEM access confirmed, the local password hashes were dumped from the Meterpreter session:</p>
+      <div class="term">
+<span class="c">meterpreter</span> &gt; hashdump
+      </div>
+      <p>The recovered NTLM hashes were then cracked using John the Ripper, yielding the plaintext shown below for both accounts:</p>
+      <div class="credbox">
+        <div><span>Administrator</span><span>Password456!</span></div>
+        <div><span>User</span><span>Password123!</span></div>
+      </div>
+      <p>Recovering working Administrator credentials on top of an already-SYSTEM shell demonstrates full compromise: an attacker at this stage has unrestricted access to the host and reusable credentials that may extend to other systems if password reuse exists elsewhere on the network.</p>
+    </div>
+
+    <div class="step">
+      <p class="step-num">07 — Impact Assessment</p>
+      <h2>Risk &amp; Impact</h2>
+      <p><strong>Severity: Critical.</strong> This vulnerability allows unauthenticated, remote code execution as SYSTEM with no user interaction, and the weak local passwords recovered afterward compound the risk. On a production network, a single host in this state is sufficient for full domain compromise, ransomware deployment, or use as a pivot point into internal systems.</p>
+    </div>
+
+    <div class="step">
+      <p class="step-num">08 — Remediation Recommendations</p>
+      <h2>Fixes</h2>
+      <ul>
+        <li>Apply Microsoft's MS17-010 patch (or the current cumulative update) to all affected hosts immediately.</li>
+        <li>Disable SMBv1 entirely where legacy compatibility isn't required — it has been deprecated by Microsoft since 2017.</li>
+        <li>Restrict SMB (port 445) exposure at the network level; it should never be reachable from an untrusted network or the internet.</li>
+        <li>Enforce a strong password policy — both recovered passwords were short, dictionary-adjacent, and cracked quickly offline.</li>
+        <li>Deploy endpoint detection to flag anomalous SMB traffic and known EternalBlue exploitation patterns.</li>
+        <li>Maintain a regular patch cadence — this vulnerability has been public and actively exploited since 2017, underscoring the cost of delayed patching.</li>
+      </ul>
+    </div>
+
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <p class="footnote">Blue · IT by T · 2026 </p>
+  </div>
+</footer>
+
+</body>
+</html>
