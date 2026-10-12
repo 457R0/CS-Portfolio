@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="0;url=http://147.224.165.181/cv">
+<title>Taveon N — CV</title>
+<style>
+  body { margin: 0; background: #14161A; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: 'IBM Plex Mono', monospace; color: #C9C5BB; }
+</style>
+</head>
+<body>
+  <p>Loading CV<span id="d">.</span></p>
+  <script>
+    // Redirect immediately, dots animation just in case meta refresh is slow
+    window.location.replace("http://147.224.165.181/cv");
+    var i = 0;
+    setInterval(function() {
+      document.getElementById('d').textContent = ['.','..','...'][i++ % 3];
+    }, 400);
+  </script>
+</body>
+</html>
